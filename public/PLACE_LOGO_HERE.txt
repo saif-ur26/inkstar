@@ -1,0 +1,23 @@
+📍 PLACE YOUR LOGO HERE
+
+To add your company logo to the website:
+
+1. Save your logo as: logo.png
+2. Place it in THIS folder (public/)
+3. Refresh browser: Ctrl + F5
+4. Your logo will appear in header, footer, and browser tab!
+
+Requirements:
+- Format: PNG (with transparent background)
+- Size: 200x200px to 400x400px
+- File size: Under 100KB
+- Name: logo.png (exactly, lowercase)
+
+Current Status:
+⏳ logo.png not found - showing temporary SVG logo
+✅ System configured and ready for your logo
+
+For detailed instructions, see: ADD_YOUR_LOGO.md
+
+Current folder path:
+C:\Users\warri\OneDrive\Desktop\delightful-design-engine-434ada56-main\delightful-design-engine-434ada56-main\public

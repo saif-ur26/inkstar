@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Plus, Edit, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useProducts, useUpdateProduct, useDeleteProduct } from '@/hooks/useProducts';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ProductDialog } from './ProductDialog';
+import { SupabaseWarning } from '@/components/SupabaseWarning';
 import { toast } from 'sonner';
 
 export function ProductsManager() {
@@ -18,8 +19,9 @@ export function ProductsManager() {
         try {
             await updateProduct.mutateAsync({ id, is_active: !isActive });
             toast.success(`Product ${!isActive ? 'activated' : 'deactivated'}`);
-        } catch (error) {
-            toast.error('Failed to update product');
+        } catch (error: any) {
+            console.error('Toggle active error:', error);
+            toast.error(error.message || 'Failed to update product');
         }
     };
 
@@ -29,8 +31,9 @@ export function ProductsManager() {
         try {
             await deleteProduct.mutateAsync(id);
             toast.success('Product deleted');
-        } catch (error) {
-            toast.error('Failed to delete product');
+        } catch (error: any) {
+            console.error('Delete error:', error);
+            toast.error(error.message || 'Failed to delete product');
         }
     };
 
@@ -45,6 +48,8 @@ export function ProductsManager() {
                     Add Product
                 </Button>
             </div>
+
+            <SupabaseWarning />
 
             <div className="grid gap-4">
                 {products?.map((product) => (

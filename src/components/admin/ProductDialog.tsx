@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ImageUpload } from './ImageUpload';
 import { toast } from 'sonner';
 
 export function ProductDialog({ open, onOpenChange, product }: any) {
@@ -16,6 +17,7 @@ export function ProductDialog({ open, onOpenChange, product }: any) {
     const createProduct = useCreateProduct();
     const updateProduct = useUpdateProduct();
     const [customOptions, setCustomOptions] = useState<any[]>([]);
+    const [productImages, setProductImages] = useState<string[]>([]);
 
     const selectedCategory = watch('categoryId');
 
@@ -23,6 +25,7 @@ export function ProductDialog({ open, onOpenChange, product }: any) {
         if (product) {
             reset(product);
             setCustomOptions(product.customizationOptions || []);
+            setProductImages(product.images || []);
         } else {
             reset({
                 name: '',
@@ -33,6 +36,7 @@ export function ProductDialog({ open, onOpenChange, product }: any) {
                 isActive: true,
             });
             setCustomOptions([]);
+            setProductImages([]);
         }
     }, [product, reset]);
 
@@ -42,7 +46,7 @@ export function ProductDialog({ open, onOpenChange, product }: any) {
                 ...data,
                 basePrice: parseFloat(data.basePrice),
                 customizationOptions: customOptions,
-                images: data.images ? data.images.split(',').map((s: string) => s.trim()) : [],
+                images: productImages,
             };
 
             if (product) {
@@ -130,8 +134,12 @@ export function ProductDialog({ open, onOpenChange, product }: any) {
                     </div>
 
                     <div>
-                        <Label>Images (comma-separated URLs)</Label>
-                        <Input {...register('images')} placeholder="/placeholder.svg, /image2.jpg" />
+                        <Label>Product Images</Label>
+                        <ImageUpload
+                            images={productImages}
+                            onChange={setProductImages}
+                            maxImages={5}
+                        />
                     </div>
 
                     <div className="flex gap-2">

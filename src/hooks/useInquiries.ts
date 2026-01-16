@@ -1,11 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
-import { Inquiry } from '@/data/mockData';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Inquiry, inquiries as mockInquiries } from '@/data/mockData';
 
 export function useInquiries() {
     return useQuery({
         queryKey: ['inquiries'],
         queryFn: async () => {
+            // Use mock data if Supabase is not configured
+            if (!isSupabaseConfigured) {
+                console.warn('⚠️ Supabase not configured. Using mock data. See QUICKSTART.md to set up Supabase.');
+                return mockInquiries;
+            }
+
             const { data, error } = await supabase
                 .from('inquiries')
                 .select('*')

@@ -49,20 +49,22 @@ ALTER TABLE subcategories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE products ENABLE ROW LEVEL SECURITY;
 ALTER TABLE inquiries ENABLE ROW LEVEL SECURITY;
 
--- Public read access for categories, subcategories, and active products
-CREATE POLICY "Public can view categories" ON categories FOR SELECT USING (true);
-CREATE POLICY "Public can view subcategories" ON subcategories FOR SELECT USING (true);
-CREATE POLICY "Public can view active products" ON products FOR SELECT USING (is_active = true);
+-- Drop existing policies if they exist
+DROP POLICY IF EXISTS "Public can view categories" ON categories;
+DROP POLICY IF EXISTS "Public can view subcategories" ON subcategories;
+DROP POLICY IF EXISTS "Public can view active products" ON products;
+DROP POLICY IF EXISTS "Public can create inquiries" ON inquiries;
+DROP POLICY IF EXISTS "Authenticated users can manage categories" ON categories;
+DROP POLICY IF EXISTS "Authenticated users can manage subcategories" ON subcategories;
+DROP POLICY IF EXISTS "Authenticated users can manage products" ON products;
+DROP POLICY IF EXISTS "Authenticated users can manage inquiries" ON inquiries;
 
--- Public can create inquiries
-CREATE POLICY "Public can create inquiries" ON inquiries FOR INSERT WITH CHECK (true);
-
--- Admin policies (you'll need to set up authentication)
--- For now, allowing all operations for authenticated users
-CREATE POLICY "Authenticated users can manage categories" ON categories FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Authenticated users can manage subcategories" ON subcategories FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Authenticated users can manage products" ON products FOR ALL USING (auth.role() = 'authenticated');
-CREATE POLICY "Authenticated users can manage inquiries" ON inquiries FOR ALL USING (auth.role() = 'authenticated');
+-- DEVELOPMENT MODE: Allow all public access
+-- WARNING: In production, replace these with proper authentication-based policies
+CREATE POLICY "Public can do everything with categories" ON categories FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Public can do everything with subcategories" ON subcategories FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Public can do everything with products" ON products FOR ALL USING (true) WITH CHECK (true);
+CREATE POLICY "Public can do everything with inquiries" ON inquiries FOR ALL USING (true) WITH CHECK (true);
 
 -- Create indexes for better performance
 CREATE INDEX idx_products_category ON products(category_id);

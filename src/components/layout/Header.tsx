@@ -26,12 +26,29 @@ export function Header() {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <div className="flex lg:flex-1">
-            <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-2">
-              <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
+            <Link to="/" className="-m-1.5 p-1.5 flex items-center gap-2 sm:gap-3">
+              <img
+                src="/logo.png"
+                alt="INK Star Logo"
+                className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
+                onError={(e) => {
+                  // Try SVG if PNG fails
+                  const img = e.currentTarget;
+                  if (img.src.endsWith('.png')) {
+                    img.src = '/logo.svg';
+                  } else {
+                    // If both fail, hide and show fallback
+                    img.style.display = 'none';
+                    const fallback = img.nextElementSibling as HTMLElement;
+                    if (fallback) fallback.style.display = 'flex';
+                  }
+                }}
+              />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-lg bg-primary hidden items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">IS</span>
               </div>
               <div className="hidden sm:block">
-                <p className="font-bold text-foreground leading-tight">INK Star</p>
+                <p className="font-bold text-foreground leading-tight text-base lg:text-lg">INK Star</p>
                 <p className="text-xs text-muted-foreground leading-tight">Printers & Packaging</p>
               </div>
             </Link>

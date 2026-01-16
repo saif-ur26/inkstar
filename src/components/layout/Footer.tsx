@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Phone, Mail, MapPin, MessageCircle, Facebook, Instagram, Linkedin } from 'lucide-react';
+import { Phone, MapPin, MessageCircle, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,17 +10,36 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="h-10 w-10 rounded-lg bg-primary flex items-center justify-center">
+            <div className="flex items-center gap-3">
+              <img
+                src="/logo.png"
+                alt="INK Star Logo"
+                className="h-12 w-12 object-contain"
+                onError={(e) => {
+                  // Try SVG if PNG fails
+                  const img = e.currentTarget;
+                  if (img.src.endsWith('.png')) {
+                    img.src = '/logo.svg';
+                  } else {
+                    // Fallback to text logo if both fail
+                    img.style.display = 'none';
+                    const fallback = img.nextElementSibling as HTMLElement;
+                    if (fallback?.classList.contains('fallback-logo')) {
+                      fallback.style.display = 'flex';
+                    }
+                  }
+                }}
+              />
+              <div className="h-12 w-12 rounded-lg bg-primary hidden fallback-logo items-center justify-center">
                 <span className="text-primary-foreground font-bold text-xl">IS</span>
               </div>
               <div>
-                <p className="font-bold leading-tight">INK Star</p>
+                <p className="font-bold leading-tight text-base">INK Star</p>
                 <p className="text-xs opacity-80 leading-tight">Printers & Plastic Machinery</p>
               </div>
             </div>
             <p className="text-sm opacity-80">
-              Premium printing & packaging solutions with quality, speed & sustainability. 
+              Premium printing & packaging solutions with quality, speed & sustainability.
               Over 10 years of industry experience.
             </p>
           </div>
@@ -85,19 +104,24 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-1 shrink-0 text-primary" />
-                <span className="opacity-80">Industrial Area, Your City, State - 123456</span>
+                <span className="opacity-80">Hyderabad, Telangana</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0 text-primary" />
-                <span className="opacity-80">+91 98765 43210</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-4 w-4 shrink-0 text-primary" />
-                <span className="opacity-80">info@inkstar.com</span>
+                <a href="tel:+919550043174" className="opacity-80 hover:opacity-100 transition-opacity">
+                  +91 95500 43174
+                </a>
               </li>
               <li className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 shrink-0 text-primary" />
-                <span className="opacity-80">WhatsApp Available</span>
+                <a
+                  href="https://wa.me/919550043174"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="opacity-80 hover:opacity-100 transition-opacity"
+                >
+                  WhatsApp Available
+                </a>
               </li>
             </ul>
           </div>

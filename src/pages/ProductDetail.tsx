@@ -14,6 +14,7 @@ import { useCategories } from '@/hooks/useCategories';
 import { useCreateInquiry } from '@/hooks/useInquiries';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { WHATSAPP_CONFIG, getWhatsAppUrl } from '@/config/whatsapp';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -51,14 +52,25 @@ export default function ProductDetail() {
     const customizations = Object.entries(selectedOptions)
       .map(([optionName, optionIndex]) => {
         const option = product.customizationOptions.find((o: any) => o.name === optionName);
-        return `${optionName}: ${option?.options[optionIndex]?.label || 'Default'}`;
+        return `  • ${optionName}: ${option?.options[optionIndex]?.label || 'Default'}`;
       })
       .join('\n');
 
-    const message = encodeURIComponent(
-      `Hi INK Star, I'm interested in ${product.name}.\n\nQuantity: ${quantity}\n${customizations ? `\nCustomization:\n${customizations}` : ''}\n\nEstimated Price: ₹${calculatedPrice * quantity} (${product.priceUnit})`
-    );
-    window.open(`https://wa.me/?text=${message}`, '_blank');
+    const pricePerPiece = calculatedPrice;
+    const totalPrice = calculatedPrice * quantity;
+
+    const message =
+      `${WHATSAPP_CONFIG.greeting}\n\n` +
+      `I'm interested in ordering:\n\n` +
+      `📦 *Product:* ${product.name}\n` +
+      `📊 *Quantity:* ${quantity} ${quantity === 1 ? 'piece' : 'pieces'}\n` +
+      `💰 *Price per piece:* ₹${pricePerPiece}\n` +
+      `💵 *Total Price:* ₹${totalPrice}\n` +
+      `${customizations ? `\n🎨 *Customizations:*\n${customizations}\n` : ''}` +
+      `\nPlease confirm availability and delivery details.\n\n` +
+      `Thank you!`;
+
+    window.open(getWhatsAppUrl(message), '_blank');
   };
 
   const handleInquiry = async () => {

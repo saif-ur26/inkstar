@@ -85,19 +85,19 @@ export default function Products() {
 
   return (
     <Layout>
-      <section className="py-8 lg:py-12 bg-gradient-to-br from-primary/10 via-background to-accent/30">
+      <section className="py-6 sm:py-8 lg:py-10 bg-gradient-to-br from-primary/10 via-background to-accent/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <AnimatedSection>
-            <h1 className="text-3xl sm:text-4xl font-bold text-foreground">Our Products</h1>
-            <p className="mt-2 text-lg text-muted-foreground">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground">Our Products</h1>
+            <p className="mt-1 sm:mt-2 text-sm sm:text-base lg:text-lg text-muted-foreground">
               Browse our complete range of printing and packaging solutions.
             </p>
           </AnimatedSection>
         </div>
       </section>
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4 sm:mb-6">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
@@ -161,7 +161,7 @@ export default function Products() {
         </div>
 
         {(selectedCategory || selectedSubcategory || searchQuery) && (
-          <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
             {activeCategory && (
               <Badge variant="secondary" className="gap-1">
                 {activeCategory.name}
@@ -189,9 +189,9 @@ export default function Products() {
           </div>
         )}
 
-        <div className="flex gap-8">
-          <aside className="hidden lg:block w-64 shrink-0">
-            <div className="sticky top-24">
+        <div className="flex gap-6 lg:gap-8">
+          <aside className="hidden lg:block w-56 xl:w-64 shrink-0">
+            <div className="sticky top-20">
               <CategoryFilter
                 selectedCategory={selectedCategory}
                 selectedSubcategory={selectedSubcategory}
@@ -202,16 +202,16 @@ export default function Products() {
           </aside>
 
           <div className="flex-1">
-            <p className="text-sm text-muted-foreground mb-4">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-3 sm:mb-4">
               Showing {filteredProducts.length} products
             </p>
 
             {filteredProducts.length > 0 ? (
               <div
                 className={cn(
-                  'grid gap-6',
+                  'grid gap-3 sm:gap-4',
                   viewMode === 'grid'
-                    ? 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-3'
+                    ? 'grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
                     : 'grid-cols-1'
                 )}
               >
@@ -222,11 +222,12 @@ export default function Products() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-12">
-                <p className="text-lg text-muted-foreground">No products found.</p>
+              <div className="text-center py-8 sm:py-12">
+                <p className="text-base sm:text-lg text-muted-foreground">No products found.</p>
                 <Button
                   variant="outline"
-                  className="mt-4"
+                  size="sm"
+                  className="mt-3 sm:mt-4"
                   onClick={() => {
                     setSearchQuery('');
                     handleCategoryChange(null);

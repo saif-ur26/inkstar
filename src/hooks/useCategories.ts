@@ -1,11 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/lib/supabase';
-import { Category, Subcategory } from '@/data/mockData';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+import { Category, Subcategory, categories as mockCategories } from '@/data/mockData';
 
 export function useCategories() {
     return useQuery({
         queryKey: ['categories'],
         queryFn: async () => {
+            // Use mock data if Supabase is not configured
+            if (!isSupabaseConfigured) {
+                console.warn('⚠️ Supabase not configured. Using mock data. See QUICKSTART.md to set up Supabase.');
+                return mockCategories;
+            }
+
             const { data: categories, error: catError } = await supabase
                 .from('categories')
                 .select('*')
