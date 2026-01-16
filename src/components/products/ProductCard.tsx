@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { MessageCircle, Eye } from 'lucide-react';
+import { MessageCircle, Eye, Tag } from 'lucide-react';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,9 +16,10 @@ export function ProductCard({ product }: ProductCardProps) {
 
   const handleWhatsAppClick = () => {
     const message = encodeURIComponent(
-      `Hi INK Star, I'm interested in ${product.name}.\n\nQuantity: ___\nCustomization: ___`
+      `Hello,\n\nI want information about:\n\nProduct: ${product.name}\nQuantity: [Please specify]\n\nThank you!`
     );
-    window.open(`https://wa.me/?text=${message}`, '_blank');
+    const phoneNumber = '919182573606'; // Your WhatsApp business number
+    window.open(`https://api.whatsapp.com/send/?phone=${phoneNumber}&text=${message}&type=phone_number&app_absent=0`, '_blank');
   };
 
   return (
@@ -29,14 +30,25 @@ export function ProductCard({ product }: ProductCardProps) {
           alt={product.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
-        {subcategory && (
-          <Badge
-            variant="secondary"
-            className="absolute top-2 left-2 text-xs bg-card/90 backdrop-blur-sm"
-          >
-            {subcategory.name}
-          </Badge>
-        )}
+        <div className="absolute top-2 left-2 flex flex-col gap-1">
+          {category && (
+            <Badge
+              variant="default"
+              className="text-xs bg-primary/90 backdrop-blur-sm"
+            >
+              <Tag className="h-3 w-3 mr-1" />
+              {category.name}
+            </Badge>
+          )}
+          {subcategory && (
+            <Badge
+              variant="secondary"
+              className="text-xs bg-card/90 backdrop-blur-sm"
+            >
+              {subcategory.name}
+            </Badge>
+          )}
+        </div>
       </div>
       <CardContent className="flex-1 p-3 sm:p-4">
         <h3 className="font-semibold text-sm sm:text-base line-clamp-2 group-hover:text-primary transition-colors min-h-[2.5rem] sm:min-h-[3rem]">

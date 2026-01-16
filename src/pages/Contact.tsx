@@ -31,14 +31,14 @@ const contactInfo = [
     title: 'WhatsApp',
     value: '+91 95500 43174',
     description: 'Quick response via WhatsApp',
-    link: 'https://wa.me/919550043174',
+    link: 'https://api.whatsapp.com/send/?phone=919550043174&text=Hello%2C%0D%0A%0D%0AI+want+information+about+your+products&type=phone_number&app_absent=0',
   },
 ];
 
 export default function Contact() {
   const handleWhatsAppClick = () => {
-    const message = encodeURIComponent("Hi INK Star, I'm interested in your printing services. Please share more details.");
-    window.open(`https://wa.me/919550043174?text=${message}`, '_blank');
+    const message = encodeURIComponent("Hello,\n\nI want information about your products and services.\n\nThank you!");
+    window.open(`https://api.whatsapp.com/send/?phone=919550043174&text=${message}&type=phone_number&app_absent=0`, '_blank');
   };
 
   const handleMapClick = () => {
