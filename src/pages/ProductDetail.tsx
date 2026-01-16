@@ -9,9 +9,10 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useProduct } from '@/hooks/useProducts';
+import { useProduct, useProducts } from '@/hooks/useProducts';
 import { useCategories } from '@/hooks/useCategories';
 import { useCreateInquiry } from '@/hooks/useInquiries';
+import { ProductCard } from '@/components/products/ProductCard';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { WHATSAPP_CONFIG, getWhatsAppUrl } from '@/config/whatsapp';
@@ -19,6 +20,7 @@ import { WHATSAPP_CONFIG, getWhatsAppUrl } from '@/config/whatsapp';
 export default function ProductDetail() {
   const { id } = useParams();
   const { data: product, isLoading } = useProduct(id || '');
+  const { data: allProducts } = useProducts(true);
   const { data: categories } = useCategories();
   const createInquiry = useCreateInquiry();
 
@@ -29,6 +31,14 @@ export default function ProductDetail() {
 
   const category = categories?.find((c) => c.id === product?.categoryId);
   const subcategory = category?.subcategories.find((s) => s.id === product?.subcategoryId);
+
+  // Get related products from the same category
+  const relatedProducts = useMemo(() => {
+    if (!product || !allProducts) return [];
+    return allProducts
+      .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
+      .slice(0, 4);
+  }, [product, allProducts]);
 
   const calculatedPrice = useMemo(() => {
     if (!product) return 0;
@@ -168,8 +178,8 @@ export default function ProductDetail() {
           {/* Image Gallery */}
           <AnimatedSection animation="slide-right">
             <div className="space-y-4">
-              <div className="relative bg-muted rounded-xl overflow-hidden p-8 lg:p-12">
-                <div className="aspect-square max-w-md mx-auto">
+              <div className="relative bg-muted rounded-xl overflow-hidden p-6">
+                <div className="aspect-square max-w-sm mx-auto">
                   <img
                     src={product.images[currentImageIndex]}
                     alt={product.name}
@@ -210,7 +220,7 @@ export default function ProductDetail() {
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
                       className={cn(
-                        'shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors p-2 bg-muted',
+                        'shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors p-2 bg-muted',
                         currentImageIndex === index
                           ? 'border-primary'
                           : 'border-transparent hover:border-muted-foreground'
@@ -378,6 +388,35 @@ export default function ProductDetail() {
             </div>
           </AnimatedSection>
         </div>
+
+        {/* Related Products */}
+        {relatedProducts.length > 0 && (
+          <div className="mt-16">
+            <AnimatedSection>
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold">More from {category?.name}</h2>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Other products you might like
+                  </p>
+                </div>
+                <Button variant="outline" asChild>
+                  <Link to={`/products?category=${product.categoryId}`}>
+                    View All
+                  </Link>
+                </Button>
+              </div>
+            </AnimatedSection>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {relatedProducts.map((relatedProduct, index) => (
+                <AnimatedSection key={relatedProduct.id} animation="fade-up" delay={index * 100}>
+                  <ProductCard product={relatedProduct} />
+                </AnimatedSection>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
