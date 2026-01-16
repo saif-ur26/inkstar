@@ -149,6 +149,17 @@ export default function ProductDetail() {
                 <span>/</span>
               </>
             )}
+            {subcategory && (
+              <>
+                <Link
+                  to={`/products?category=${category.id}&subcategory=${subcategory.id}`}
+                  className="hover:text-primary transition-colors"
+                >
+                  {subcategory.name}
+                </Link>
+                <span>/</span>
+              </>
+            )}
             <span className="text-foreground">{product.name}</span>
           </nav>
         </AnimatedSection>
@@ -157,12 +168,14 @@ export default function ProductDetail() {
           {/* Image Gallery */}
           <AnimatedSection animation="slide-right">
             <div className="space-y-4">
-              <div className="relative aspect-square bg-muted rounded-xl overflow-hidden">
-                <img
-                  src={product.images[currentImageIndex]}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="relative bg-muted rounded-xl overflow-hidden p-8 lg:p-12">
+                <div className="aspect-square max-w-md mx-auto">
+                  <img
+                    src={product.images[currentImageIndex]}
+                    alt={product.name}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
 
                 {product.images.length > 1 && (
                   <>
@@ -197,13 +210,13 @@ export default function ProductDetail() {
                       key={index}
                       onClick={() => setCurrentImageIndex(index)}
                       className={cn(
-                        'shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors',
+                        'shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors p-2 bg-muted',
                         currentImageIndex === index
                           ? 'border-primary'
-                          : 'border-transparent hover:border-muted'
+                          : 'border-transparent hover:border-muted-foreground'
                       )}
                     >
-                      <img src={image} alt="" className="w-full h-full object-cover" />
+                      <img src={image} alt="" className="w-full h-full object-contain" />
                     </button>
                   ))}
                 </div>
@@ -215,11 +228,18 @@ export default function ProductDetail() {
           <AnimatedSection animation="slide-left" delay={200}>
             <div className="space-y-6">
               <div>
-                {subcategory && (
-                  <Badge variant="secondary" className="mb-2">
-                    {subcategory.name}
-                  </Badge>
-                )}
+                <div className="flex gap-2 mb-3">
+                  {category && (
+                    <Badge variant="default" className="text-xs">
+                      {category.name}
+                    </Badge>
+                  )}
+                  {subcategory && (
+                    <Badge variant="secondary" className="text-xs">
+                      {subcategory.name}
+                    </Badge>
+                  )}
+                </div>
                 <h1 className="text-3xl font-bold text-foreground">{product.name}</h1>
                 <p className="mt-3 text-muted-foreground">{product.description}</p>
               </div>

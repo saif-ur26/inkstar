@@ -24,7 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Card className="group overflow-hidden hover:shadow-lg transition-all duration-300 h-full flex flex-col">
-      <div className="relative overflow-hidden aspect-square bg-muted">
+      <Link to={`/products/${product.id}`} className="relative overflow-hidden aspect-square bg-muted block">
         <img
           src={product.images[0]}
           alt={product.name}
@@ -49,7 +49,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </Badge>
           )}
         </div>
-      </div>
+      </Link>
       <CardContent className="flex-1 p-3 sm:p-4">
         <h3 className="font-semibold text-sm sm:text-base line-clamp-2 group-hover:text-primary transition-colors min-h-[2.5rem] sm:min-h-[3rem]">
           {product.name}
