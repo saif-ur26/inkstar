@@ -291,6 +291,4 @@ For issues or questions:
 - Check browser console for errors
 - Review Supabase dashboard logs
 
----
 
-Built with ❤️ using React, TypeScript, and Supabase
