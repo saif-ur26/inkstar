@@ -34,10 +34,13 @@ export default function ProductDetail() {
 
   // Get related products from the same category
   const relatedProducts = useMemo(() => {
-    if (!product || !allProducts) return [];
-    return allProducts
-      .filter((p) => p.categoryId === product.categoryId && p.id !== product.id)
-      .slice(0, 4);
+    if (!product || !allProducts) {
+      console.log('No product or allProducts:', { product: !!product, allProducts: !!allProducts });
+      return [];
+    }
+    const filtered = allProducts.filter((p) => p.categoryId === product.categoryId && p.id !== product.id);
+    console.log('Related products:', filtered.length, 'for category:', product.categoryId);
+    return filtered.slice(0, 4);
   }, [product, allProducts]);
 
   const calculatedPrice = useMemo(() => {
